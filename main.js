@@ -1,7 +1,6 @@
+/* created by Atreyye Thakur*/
 
-/*created by prashant shukla */
-
-var paddle2 =10,paddle1=10;
+var paddle2 = 10,paddle1= 10;
 
 var paddle1X = 10,paddle1Height = 110;
 var paddle2Y = 685,paddle2Height = 70;
@@ -28,10 +27,13 @@ function setup(){
   canvas.parent('canvas');
   video = createCapture(VIDEO);
 	video.size(700, 400);
-  image(0, 0, 700, 600);
+  
   posenet = ml5.poseNet(video, modelLoaded);
+  posenet.on("pose", gotPoses);
 }
-
+function modelLoaded(){
+ console.log("Model is loaded");
+}
 function gotPoses(results){
   if(results.length > 0){
 		noseX = results[0].pose.wrist.x;
@@ -40,8 +42,14 @@ function gotPoses(results){
 		console.log("wrist X = " + wristX + "wrist Y = " + wristY);
 	}
 }
+function startGame(){
+  game_status = "start";
+  document.getElementById("status").innerHTML = "Status : Game is loading";
+}
 
 function draw(){
+  if(game_status == "start"){
+  image(0, 0, 700, 400);
 if(score > 0.2){
   fill("red");
   stroke("red");
@@ -84,6 +92,7 @@ if(score > 0.2){
    
    //function move call which in very important
     move();
+}
 }
 
 
@@ -146,13 +155,13 @@ function move(){
 }
 if(pcscore ==4){
     fill("#FFA500");
-    stroke(0)
+    stroke(0);
     rect(0,0,width,height-1);
     fill("white");
     stroke("white");
-    textSize(25)
+    textSize(25);
     text("Game Over!☹☹",width/2,height/2);
-    text("Reload The Page!",width/2,height/2+30)
+    text("Reload The Page!",width/2,height/2+30);
     noLoop();
     pcscore = 0;
 }
@@ -161,7 +170,6 @@ if(pcscore ==4){
    }   
 }
 
-
 //width height of canvas speed of ball 
 function models(){
     textSize(18);
@@ -169,7 +177,7 @@ function models(){
     noStroke();
     text("Width:"+width,135,15);
     text("Speed:"+abs(ball.dx),50,15);
-    text("Height:"+height,235,15)
+    text("Height:"+height,235,15);
 }
 
 
